@@ -18,9 +18,9 @@ To run this program, you will need to have the following installed:
 ## Installation
 
 To install the program, simply clone this repository and run the following command:
-
+```
 "pip install -r requirements.txt"
-
+```
 ## Usage
 
 Once the program is installed, you can run it by typing the following command:
