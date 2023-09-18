@@ -1,0 +1,7 @@
+
+install nltk  'pip install nltk'
+install matplotlib  'pip install matplotlib'
+also install these nltk libraries:
+ -punkt
+ -stopwords
+ -vader_lexicon
