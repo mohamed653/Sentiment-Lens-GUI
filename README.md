@@ -32,7 +32,3 @@ To run the program, simply run the following command:
 
 python sentiment_analysis.py
 
-
-### License
-
-This program is licensed under the MIT License.
