@@ -1,5 +1,6 @@
 # Sentiment Lens
-
+#### Video Demo:  
+#### Description:
 This program is a sentiment analysis tool that uses the Vader algorithm to determine the sentiment of a given text. It is written in Python using the Tkinter library for the GUI.
 
 To use the program, simply enter the text you want to analyze in the text field and click the "Show Sentiment" button. The program will then analyze the text and display the sentiment in a label below the text field.
