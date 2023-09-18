@@ -1,94 +1,60 @@
-from tkinter import *
-import string 
-
+import re
+import string
+import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from nltk.tokenize import word_tokenize
 
-from PIL import ImageTk,Image
+# Preprocess the text
+def preprocess_text(text):
+    # Lowercase the text
+    text = text.lower()
 
-'''    # 5- remove stopwords from the tokenized words (for the detailed sentiment analysis)
-    final_words = []00
-    for word in tokenized_words:
-        if word not in stopwords.words("english"):
-            final_words.append(word)
-    # 6- Lemmatization
-    lemma_words = []
-    for word in final_words:
-        word = WordNetLemmatizer().lemmatize(word)
-        lemma_words.append(word)'''
+    # Remove punctuation
+    text = re.sub(r'[^\w\s]', '', text)
 
+    # Remove stop words
+    stopwords = nltk.corpus.stopwords.words('english')
+    text = ' '.join([word for word in text.split() if word not in stopwords])
 
+    # Lemmatize the words
+    lemmatizer = nltk.WordNetLemmatizer()
+    text = ' '.join([lemmatizer.lemmatize(word) for word in text.split()])
 
-# ========== ALGORITHM ==========
+    return text
 
-def sentiment_analyze(sentiment_text):
-    # ========== NORMLIZATION ==========
+# Perform sentiment analysis
+def sentiment_analyze(text):
+    # Create a sentiment analyzer
+    sentiment_analyzer = SentimentIntensityAnalyzer()
 
-    # 1- read the text file and encode it
-    text = sentiment_text
-    # 2- text to lowercase
-    lower_case = text.lower()
+    # Calculate the sentiment scores
+    sentiment_scores = sentiment_analyzer.polarity_scores(text)
 
-    # 3- remove punctuation
-    cleaned_text = lower_case.translate(str.maketrans('', '', string.punctuation))
+    # Determine the sentiment of the text
+    sentiment = 'negative' if sentiment_scores['neg'] > sentiment_scores['pos'] else 'positive' if sentiment_scores['pos'] > sentiment_scores['neg'] else 'neutral'
 
-    # 4- tokenization  (for the detailed sentiment analysis)
-    tokenized_words = word_tokenize(cleaned_text, "english")
+    return sentiment
 
+# Get the sentiment of the input text
+def get_sentiment(text):
+    # Preprocess the text
+    text = preprocess_text(text)
 
-# ======== real algorithm =========
-    score = SentimentIntensityAnalyzer().polarity_scores(sentiment_text)
-    neg = score['neg']
-    pos = score['pos']
-    if neg > pos:
-        return"Negative Sentiment"
-    elif pos > neg:
-        return "Positive Sentiment"
-    else:
-        return "Neutral Sentiment  "
+    # Perform sentiment analysis
+    sentiment = sentiment_analyze(text)
 
+    return sentiment
 
+# Main function
+def main():
+    # Get the input text
+    input_text = input('Enter the text you want to analyze: ')
 
-# ========== GUI ==========
+    # Get the sentiment of the input text
+    sentiment = get_sentiment(input_text)
 
-window = Tk()
-window.geometry('1000x600+300+120')
-window.title('Sentiment Analysis')
+    # Print the sentiment
+    print('The sentiment of the text is:', sentiment)
 
-img_positive_sentiment = ImageTk.PhotoImage(Image.open("positive.png"))
-img_negative_sentiment = ImageTk.PhotoImage(Image.open("negative.png"))
-img_neutral_sentiment = ImageTk.PhotoImage(Image.open("neutral.png"))
-# label_output = Label(image=img_neutral_sentiment)
-def analyze_text():
-    target_text = b.get()
-    txt = sentiment_analyze(target_text)
-    Label(text=txt, fg='red', font=12).place(x=415,y=200)
-    if txt == "Negative Sentiment":
-         Label(image=img_negative_sentiment).place(x=350, y=250)
-
-    elif txt == "Positive Sentiment":
-         Label(image=img_positive_sentiment).place(x=350, y=250)
-
-    else:
-         Label(image=img_neutral_sentiment).place(x=350, y=250)
-
-
-
-b = StringVar()
-
-
-label_title = Label(text='Input the text you want to analyze :', fg='red', font=12).pack()
-text = Entry(textvariable = b, width=120).pack()
-button = Button(text='Show Sentiment', command=analyze_text, width=14, height=2, bg='blue', fg='white', font=6, bd=3, cursor ='hand2').pack()
-
-button_quit = Button(window,text='Exit Program',command=window.quit, width=14, height=2, bg='red', fg='white',font=6, bd=3).pack()
-window.mainloop()
-
-
-
-
-
-
-
-
-
+if __name__ == '__main__':
+    main()
