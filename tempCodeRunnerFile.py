@@ -6,6 +6,16 @@ from nltk.tokenize import word_tokenize
 
 from PIL import ImageTk,Image
 
+'''    # 5- remove stopwords from the tokenized words (for the detailed sentiment analysis)
+    final_words = []00
+    for word in tokenized_words:
+        if word not in stopwords.words("english"):
+            final_words.append(word)
+    # 6- Lemmatization
+    lemma_words = []
+    for word in final_words:
+        word = WordNetLemmatizer().lemmatize(word)
+        lemma_words.append(word)'''
 
 
 
